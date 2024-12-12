@@ -9,7 +9,20 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div id='calendar'></div>
+    <div class="row">
+        <div class="col-md-2">
+            <div id="otherEvents">
+                <p><strong>Sürüklenebilir Etkinlikler</strong></p>
+                <div class="fc-event">1. Etkinlik</div><br />
+                <div class="fc-event">2. Etkinlik</div><br />
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div id='calendar'>
+
+            </div>
+        </div>
+    </div>
 </body>
 
 @section Scripts {
@@ -17,60 +30,81 @@
     @* <script src="~/lib/fullcalendar/interaction/index.global.js></script> *@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+
             var calendarEl = document.getElementById('calendar');
+            var draggableEl = document.getElementById('otherEvents');
+
+            var Draggable = FullCalendar.Draggable;
+            new Draggable(draggableEl, {
+                itemSelector: '.fc-event',
+                eventData: function (eventEl) {
+                    return {
+                        title: eventEl.innerText,
+                        duration: '01:30'
+                    };
+                }
+            });
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                // plugins = { 'interaction','dayGrid', 'timeGrid', 'list','bootstrap'},
-                initialView: 'timeGridWeek',
+                initialView: 'dayGridMonth',
                 themeSystem: 'bootstrap',
-                // bootstrapFontAwesome: {
-                //     dayGridMonth: 'calendar',
-                //     prev: 'fa-chevron-circle-left',
-                //     next: 'fa-chevron-circle-right',
-                //     listWeek: 'fa-list'
-                // },
                 locale: 'tr',
+
+                // Saat aralığı oluşturma
+                // views: {
+                //     timeGrid: {
+                //         minTime: '07:00:00',
+                //         maxTime: '19:00:00'
+                //     }
+                // },
+                
+
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next today addEvent',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     //listDay, listWeek, listMonth, listYear
 
                 },
+
+                customButtons: {
+                    addEvent: {
+                        text: 'Ekle',
+                        click: function () {
+                            var newEvent = {
+                                id: 'a',
+                                title: 'New Event',
+                                start: '2024-12-15T08:00:00.000Z',
+                                end: '2024-12-15T10:00:00.000Z'
+                            }
+
+                            calendar.addEvent(newEvent);
+                        }
+                    }
+                },
+
+                //Event renklendirme
+                // eventColor : 'red',
+                // eventBackgroundColor : 'red',
+                // eventBorderColor: 'black',
+                // eventTextColor: 'white',
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    // second: '',
+                    // omitZeroMinute: true,
+                    // meridiem: 'narrow' 
+                },
+                // displayEventTime: true, //false olduğunda event'in saatini göstermez
+                // displayEventEnd: false,
+                /*
+                addEventSource ile takvimde göstereceğimiz event dizisini ekleyebiliriz. "Randevu Sistemi - Randevu Ekleme-Güncelleme-Silme" bölümünde, "Randevuların Veritabanından Çekilerek Takvimde Gösterilmesi" dersinde uygulamalı olarak kullanacağız.
+                */
+
                 footer: {
                     left: 'prevYear',
                     right: 'NextYear'
                 },
-                //scrollTime: '08:00:00',
-                // Saat aralığı oluşturma
-                minTime: '08:00:00',
-                maxTime: '21:00:00',
-
-                //Saat aralıkları formatını değiştirme
-                // slotDuration: '00:15:00', //zaman aralıklarını belirler
-                // slotLabelInterval: '00:15:00', //listede yazan saat başlıkları
-                slotLabelFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                //     omitZeroMinute: true,
-                //     meridiem: 'short' //am or pm
-                },
-
-                //daygrid
-                fixedWeekCount: true,
-                showNonCurrentDates: false,
-
-
-                //Yeniden Boyutlandırma
-                // handleWindowResize: true,
-                // windowResizeDelay: 1000,
-                // windowResize: function (view) {
-                //     alert('Takvim yeniden boyutlandırıldı.');
-                // },
-
-                // height: 450,
-                // contentHeight: 650,
-                // aspectRatio: 1.2, //en-boy oranı
-
                 allDaySlot: false,
                 firstDay: 1,
                 buttonText: {
@@ -80,36 +114,29 @@
                     day:    'Gün',
                     list:   'Liste'
                 },
-
-                customButtons: {
-                    getDate:{
-                        text: 'date',
-                        click: function () {
-                            var date = new Date();
-                            alert(date);
-                        }
-                    }
-                },
-                timeZone : "UTC",
                 events: [
                     {
-                        id: 'x',
-                        title: 'Ders',
-                        start: '2024-12-15T08:00:00.000Z',
-                        end: '2024-12-15T10:00:00.000Z'
+                        title: 'Etkinlik 1',
+                        start: '2024-12-05'
                     },
                     {
+                        id: 'y',
                         title: 'Etkinlik 2',
                         start: '2024-12-10',
                         end: '2024-12-12'
                     }
-                ],
-                selectable: true,
-                select: function (selectionInfo) {
-                    //kod
-                }
+                ]
             });
+
             calendar.render();
+            var events = calendar.getEvents();
+            console.log(events);
+
+            var id = 'x';
+            var event = calendar.getEventById(id);
+            console.log(event.title);
+
+            // calendar.renderEvents();
         });
     </script>
 }
