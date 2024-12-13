@@ -19,7 +19,6 @@
         </div>
         <div class="col-md-10">
             <div id='calendar'>
-
             </div>
         </div>
     </div>
@@ -27,7 +26,6 @@
 
 @section Scripts {
     <!-- FullCalendar JavaScript -->
-    @* <script src="~/lib/fullcalendar/interaction/index.global.js></script> *@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -46,8 +44,17 @@
             });
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
+                initialView: 'timeGridWeek',
                 themeSystem: 'bootstrap',
+
+                //ikon ekleme
+                bootstrapFontAwesome: {
+                    dayGridMonth: 'calendar',
+                    prev: 'fa-chevron-circle-left',
+                    next: 'fa-chevron-circle-right',
+                    listWeek: 'fa-list'
+                },
+
                 locale: 'tr',
 
                 // Saat aralığı oluşturma
@@ -57,7 +64,7 @@
                 //         maxTime: '19:00:00'
                 //     }
                 // },
-                
+
 
                 headerToolbar: {
                     left: 'prev,next today addEvent',
@@ -93,7 +100,7 @@
                     minute: '2-digit',
                     // second: '',
                     // omitZeroMinute: true,
-                    // meridiem: 'narrow' 
+                    // meridiem: 'narrow'
                 },
                 // displayEventTime: true, //false olduğunda event'in saatini göstermez
                 // displayEventEnd: false,
@@ -105,27 +112,149 @@
                     left: 'prevYear',
                     right: 'NextYear'
                 },
+                //scrollTime: '08:00:00',
+
+
+                //Saat aralıkları formatını değiştirme
+                // slotDuration: '00:15:00', //zaman aralıklarını belirler
+                // slotLabelInterval: '00:15:00', //listede yazan saat başlıkları
+                slotLabelFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    //     omitZeroMinute: true,
+                    //     meridiem: 'short' //am or pm
+                },
+
+                //daygrid
+                fixedWeekCount: true,
+                showNonCurrentDates: false,
+
+                //Yeniden Boyutlandırma
+                // handleWindowResize: true,
+                // windowResizeDelay: 1000,
+                // windowResize: function (view) {
+                //     alert('Takvim yeniden boyutlandırıldı.');
+                // },
+
+                // height: 450,
+                // contentHeight: 650,
+                // aspectRatio: 1.2, //en-boy oranı
+
                 allDaySlot: false,
                 firstDay: 1,
                 buttonText: {
-                    today:  'Bugün',
-                    month:  'Ay',
-                    week:   'Hafta',
-                    day:    'Gün',
-                    list:   'Liste'
+                    today: 'Bugün',
+                    month: 'Ay',
+                    week: 'Hafta',
+                    day: 'Gün',
+                    list: 'Liste'
                 },
+
+                //Event sıralama
+                //eventOrder : 'title', //start, -duration, allDay, title, [], function
+
+                //Başlangıç tarihi
+                // defaultDate: '2024-12-13',
+                // validRange: {
+                //     start: '2024-12-20' //start tarihinden öncesini göstermez
+                // },
+
+                //Etkinlik oluşturma
+                timeZone: 'local',
                 events: [
                     {
+                        id: 'x',
                         title: 'Etkinlik 1',
-                        start: '2024-12-05'
+                        start: '2024-12-15T08:00:00',
+                        end: '2024-12-15T10:30:00'
                     },
                     {
                         id: 'y',
                         title: 'Etkinlik 2',
-                        start: '2024-12-10',
-                        end: '2024-12-12'
+                        start: '2024-12-15T13:00:00',
+                        end: '2024-12-15T15:30:00'
                     }
-                ]
+                ],
+
+                //Event'ler üzerinde manipülasyon
+                // eventRender: function (info) {
+                //     console.log(info.event.title); // event, el, isMirror
+                // },
+
+                //Seçilen zaman dilimi
+                selectable: true,
+                droppable: true,
+                select: function (selectionInfo) {
+                    //Seçildiğinde çalışmasını istediğim kodu yazacağım
+                    console.log("Seçilen Zaman Dilimi:", selectionInfo.startStr, "-", selectionInfo.endStr);
+                },
+                eventClick: function (info) {
+                    alert(info.event.title);
+                },
+
+                // Mouse Alert
+                // eventMouseEnter: function (onMouse) {
+                //     alert(onMouse.event.start);
+                // },
+                // eventMouseLeave: function (onLeave) {
+                //     alert(onLeave.event.id);
+                // }
+
+                // Update Event with mouse
+                editable: true,
+                // eventStartEditable : false,
+                // eventDurationEditable: true
+                // eventDragMinDistance: 100,
+                // dragRevertDuration: 1500,
+                // dragScroll: true,
+                // snapDuration: '00:15:00'
+                // eventOverlap: function (stillEvent, movingEvent) {
+                //aynı zamana event oluşturmayı engeller
+                //     return stillEvent.allDay && movingEvent.allDay;
+                // },
+
+                //Güncelleme Kısıtlaması
+                // eventConstraint: {
+                //     startTime: '10:00',
+                //     endTime: '19:00',
+                //     daysOfWeek: [1,2,3]
+                // }
+                // eventAllow: function (dropInfoEvent, draggedEvent){
+                //     //kontrol
+                //     console.log(dropInfoEvent.start);
+                //     return false;
+                // }
+
+                eventDragStart: function (info) {
+                    console.log('başladı.');
+                },
+                eventDragStop: function (info) {
+                    console.log('bitti.');
+                },
+                eventDrop: function (eventDropInfo) {
+                    console.log('droped'); //event, oldEvent, revert()
+                },
+                eventResizeStart: function (info) {
+                    console.log('Resize başladı.');
+                },
+                eventResizeStop: function (info) {
+                    console.log('Resize bitti.');
+                },
+                eventResize: function (eventResizeInfo) {
+                    //event, prevEvent, revert()
+                    console.log('Resize edildi.');
+
+                    //eventResizeInfo.revert(); //örn:2 saat ayarlanmışsa süreyi uzatmayı ya da kısaltmayı engeller
+                },
+                drop: function (dropInfo) {
+                    console.log('drop edildi.'); //allDay, date, dateStr, draggedEl
+                },
+                eventReceive: function (info) {
+                    console.log('Receive metodu tetiklendi.'); //draggedEl, event
+                },
+                eventLeave: function (info) {
+                    console.log('Leave edildi.'); //Takvimler arasında event'ler sürüklendiğinde çalışır.
+                }
             });
 
             calendar.render();
