@@ -10,11 +10,12 @@
 </head>
 <body>
     <div class="row">
+        <!--Drag-n-Drop Events -->
         <div class="col-md-2">
             <div id="otherEvents">
                 <p><strong>Sürüklenebilir Etkinlikler</strong></p>
-                <div class="fc-event">1. Etkinlik</div><br />
-                <div class="fc-event">2. Etkinlik</div><br />
+                <div class="fc-event" id="isValid">1. Etkinlik</div><br />
+                <div class="fc-event" id="isNotValid">2. Etkinlik</div><br />
             </div>
         </div>
         <div class="col-md-10">
@@ -71,7 +72,6 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     //listDay, listWeek, listMonth, listYear
-
                 },
 
                 customButtons: {
@@ -254,7 +254,8 @@
                 },
                 eventLeave: function (info) {
                     console.log('Leave edildi.'); //Takvimler arasında event'ler sürüklendiğinde çalışır.
-                }
+                },
+                dropAccept : '.fc-event' // #id .class
             });
 
             calendar.render();
