@@ -1,0 +1,40 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="Register" asp-controller="Account">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h2>Register</h2>
+            </div>
+            <div class="card-body">
+                <div>
+                    <label>Username</label>
+                    <span asp-validation-for="Username"></span>
+                    <input type="text" class="form-control" asp-for="Username" />
+                </div>
+                <div>
+                    <label>Email</label>
+                    <span asp-validation-for="Email"></span>
+                    <input type="email" class="form-control" asp-for="Email" />
+                </div>
+                <div>
+                    <label>Password</label>
+                    <span asp-validation-for="Password"></span>
+                    <input type="password" class="form-control" asp-for="Password" />
+                </div>
+                <div>
+                    <label>Confirm Password</label>
+                    <span asp-validation-for="ConfirmPassword"></span>
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" />
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
