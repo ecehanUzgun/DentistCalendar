@@ -38,7 +38,7 @@ namespace DentistCalendar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel user)
+        public IActionResult Register(RegisterViewModel user)
         {
             if (ModelState.IsValid)
             {
@@ -46,24 +46,48 @@ namespace DentistCalendar.Controllers
                 AppUser appUser = new AppUser()
                 {
                     UserName = user.Username,
-                    Email = user.Email
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Email = user.Email,
+                    Color = user.Color,
+                    IsDentist = user.IsDentist
                 };
 
                 //Veritabanına kaydet
-                var result = await _userManager.CreateAsync(appUser, user.Password);
+                IdentityResult result = _userManager.CreateAsync(appUser, user.Password).Result;
+
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    bool roleCheck = user.IsDentist ? AddRole("Dentist") : AddRole("Secretary");
+
+                    if (!roleCheck)
+                    {
+                        return View("Error");
+                    }
+                    _userManager.AddToRoleAsync(appUser, user.IsDentist ? "Dentist" : "Secretary").Wait();
+                    return RedirectToAction("Index","Home");
                 }
-                else
-                {
-                    return View(user);
-                }
+                return View("Error");
             }
             else
             {
                 return View(user);
             }
+        }
+
+        private bool AddRole(string roleName)
+        {
+            if (!_roleManager.RoleExistsAsync(roleName).Result)
+            {
+                AppRole role = new AppRole()
+                {
+                    Name = roleName
+                };
+
+                IdentityResult result = _roleManager.CreateAsync(role).Result;
+                return result.Succeeded;
+            }
+            return true;
         }
 
         //Login
@@ -80,7 +104,7 @@ namespace DentistCalendar.Controllers
                 AppUser appUser = await _userManager.FindByEmailAsync(lvm.Email);
                 if (appUser != null) 
                 {
-                    var result = await _signInManager.PasswordSignInAsync(appUser, lvm.Password, rememberMe, false);
+                    var result = await _signInManager.PasswordSignInAsync(appUser, lvm.Password, rememberMe, false); //false olduğunda yanlış şifre girilse de herhangi bir kitleme işlemi yapmaz
 
                     if (result.Succeeded)
                     {
@@ -91,7 +115,7 @@ namespace DentistCalendar.Controllers
             return View(lvm);
         }
 
-        public async Task<IActionResult> LogOut()
+        public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index","Home");

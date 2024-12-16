@@ -8,28 +8,47 @@
     <div class="col-md-6 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h2>Register</h2>
+                <h2>Randevu Bilgi Sistemine Kayıt Ol</h2>
             </div>
             <div class="card-body">
                 <div>
-                    <label>Username</label>
+                    <label asp-for="Username"></label>
                     <span asp-validation-for="Username"></span>
                     <input type="text" class="form-control" asp-for="Username" />
                 </div>
                 <div>
-                    <label>Email</label>
+                    <label asp-for="Name"></label>
+                    <span asp-validation-for="Name"></span>
+                    <input type="text" class="form-control" asp-for="Name" />
+                </div>
+                <div>
+                    <label asp-for="Surname"></label>
+                    <span asp-validation-for="Surname"></span>
+                    <input type="text" class="form-control" asp-for="Surname" />
+                </div>
+                <div>
+                    <label asp-for="Email"></label>
                     <span asp-validation-for="Email"></span>
                     <input type="email" class="form-control" asp-for="Email" />
                 </div>
                 <div>
-                    <label>Password</label>
+                    <label asp-for="Color"></label>
+                    <span asp-validation-for="Color"></span>
+                    <input type="text" class="form-control" asp-for="Color" />
+                </div>
+                <div>
+                    <label asp-for="Password"></label>
                     <span asp-validation-for="Password"></span>
                     <input type="password" class="form-control" asp-for="Password" />
                 </div>
                 <div>
-                    <label>Confirm Password</label>
+                    <label asp-for="ConfirmPassword"></label>
                     <span asp-validation-for="ConfirmPassword"></span>
                     <input type="password" class="form-control" asp-for="ConfirmPassword" />
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" asp-for="IsDentist" />
+                    <label asp-for="IsDentist" class="form-check-label"></label>
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>
             </div>
