@@ -31,7 +31,6 @@ namespace DentistCalendar.Models.ViewModels
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "Randevu Rengi")]
-        [Required(ErrorMessage = "Lütfen randevu rengini belirtiniz!")]
         public string Color { get; set; }
 
         [Display(Name = "Doktorum")]

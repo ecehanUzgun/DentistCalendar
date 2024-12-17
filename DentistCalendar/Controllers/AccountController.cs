@@ -108,7 +108,7 @@ namespace DentistCalendar.Controllers
 
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index","Profile");
                     }
                 }
             }
@@ -119,6 +119,11 @@ namespace DentistCalendar.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index","Home");
+        }
+
+        public IActionResult Denied()
+        {
+            return View();
         }
     }
 }
