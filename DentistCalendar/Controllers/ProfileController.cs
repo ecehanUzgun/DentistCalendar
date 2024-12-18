@@ -54,10 +54,17 @@ namespace DentistCalendar.Controllers
                 return View("Error");
             }
 
+            var dentists = _userManager.Users.Where(x => x.IsDentist).ToList();
+
             SecretaryViewModel svm = new SecretaryViewModel()
             {
                 User = appUser,
-                Dentists = _userManager.Users.Where(x => x.IsDentist)
+                Dentists = dentists,
+                DentistsSelectList = dentists.Select(dentist => new SelectListItem
+                {
+                    Value = dentist.Id.ToString(),
+                    Text = $"Dt. {dentist.Name} {dentist.Surname}"
+                }).ToList()
             };
 
             return View(svm);
