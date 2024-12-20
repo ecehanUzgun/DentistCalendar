@@ -19,11 +19,14 @@ namespace DentistCalendar.Controllers
             var model = _dbContext.Appointments
                 .Include(x => x.User).Select(x => new AppointmentViewModel()
                 {
+                    Id = x.ID,
                     Dentist = x.User.Name + " " + x.User.Surname,
-                    Patient = x.PatientName + " " + x.PatientSurname,
+                    PatientName = x.PatientName, 
+                    PatientSurname = x.PatientSurname,
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
                     Description = x.Description,
+                    Color = x.User.Color,
                     UserId = x.User.Id
                 });
             return Json(model);
@@ -34,11 +37,14 @@ namespace DentistCalendar.Controllers
             var model = _dbContext.Appointments.Where(x => x.UserId == userId)
                 .Include(x => x.User).Select(x => new AppointmentViewModel()
                 {
+                    Id = x.ID,
                     Dentist = x.User.Name + " " + x.User.Surname,
-                    Patient = x.PatientName + " " + x.PatientSurname,
+                    PatientName = x.PatientName,
+                    PatientSurname = x.PatientSurname,
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
                     Description = x.Description,
+                    Color = x.User.Color,
                     UserId = x.User.Id
                 });
 
