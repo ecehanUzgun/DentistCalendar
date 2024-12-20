@@ -102,5 +102,7 @@ namespace DentistCalendar.Controllers
             _dbContext.SaveChanges();
             return Json("200");
         }
+
+
     }
 }
